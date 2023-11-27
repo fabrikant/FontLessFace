@@ -10,7 +10,7 @@ class FontLessFaceView extends WatchUi.WatchFace {
     var bigDigital;
 
     function initialize() {
-        bigDigital = new LCDSymbols({:width => 40, :height => 75, :line_width => 12,
+        bigDigital = new LCDSymbols({:width => 45, :height => 110, :line_width => 12,
             :line_offset =>3});
         WatchFace.initialize();
     }
