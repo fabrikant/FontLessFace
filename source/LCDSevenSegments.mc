@@ -5,6 +5,7 @@ import Toybox.Math;
 class LCDSevenSegments {
 
     var height, width, line_width, line_offset;
+    var simple_style;
     var segments;
 
     function initialize(params) {
@@ -13,6 +14,11 @@ class LCDSevenSegments {
         self.width = params[:width];
         self.line_width = params[:line_width];
         self.line_offset = params[:line_offset];
+        simple_style = false;
+        if (params.hasKey(:simple_style)){
+            simple_style = params[:simple_style];
+        }
+
         initPoligons();
 
     }
@@ -20,70 +26,104 @@ class LCDSevenSegments {
     function initPoligons(){
         segments = [];
 
-        var horizontal_size = width - 2 * line_offset - 5;
-        var vertical_size = Math.round((height - 2 * line_offset) / 2) - 2;
+        if (simple_style){
+            
+            var horizontal_size = width - 2 * line_offset;
+            var vertical_size = Math.round((height - 2 * line_offset) / 2);
 
-        var poligon_up = [
-            [0,0],
-            [horizontal_size,0],
-            [horizontal_size - line_width, line_width],
-            [line_width, line_width]
-        ];
+            var poligon_horizontal = [
+                [0,0],
+                [horizontal_size,0], 
+                [horizontal_size,line_width],
+                [0, line_width]
+            ];
 
-        var poligon_right_up = [
-            [0, line_width],
-            [line_width, 0],
-            [line_width, vertical_size],
-            [0, vertical_size - line_width / 2]
-        ];
+            var poligon_vertical = [
+                [0, 0],
+                [line_width, 0],
+                [line_width, vertical_size],
+                [0, vertical_size]
+            ];
+         
+            var x_right = width - line_width - line_offset;
+            var y_vertical = line_offset + vertical_size;
+   
+            segments.add(movePoligon(poligon_horizontal, line_offset, line_offset));
+            segments.add(movePoligon(poligon_vertical, x_right, line_offset));
+            segments.add(movePoligon(poligon_vertical, x_right, y_vertical));
+            segments.add(movePoligon(poligon_horizontal, line_offset, height - line_offset - line_width));
+            segments.add(movePoligon(poligon_vertical, line_offset, y_vertical));
+            segments.add(movePoligon(poligon_vertical, line_offset, line_offset));
+            segments.add(movePoligon(poligon_horizontal, line_offset, (height - line_width)/ 2));
+        
+        }else{
 
-        var poligon_right_bottom = [
-            [0, line_width / 2],
-            [line_width, 0],
-            [line_width, vertical_size],
-            [0, vertical_size - line_width]
-        ];
+            var horizontal_size = width - 2 * line_offset - 5;
+            var vertical_size = Math.round((height - 2 * line_offset) / 2) - 2;
 
-        var poligon_left_up = [
-            [0,0],
-            [line_width, line_width / 2],
-            [line_width, vertical_size - line_width],
-            [0, vertical_size]
-        ];
+            var poligon_up = [
+                [0,0],
+                [horizontal_size,0],
+                [horizontal_size - line_width, line_width],
+                [line_width, line_width]
+            ];
 
-        var poligon_left_bottom = [
-            [0,0],
-            [line_width, line_width],
-            [line_width, vertical_size - line_width / 2],
-            [0, vertical_size]
-        ];
+            var poligon_right_up = [
+                [0, line_width],
+                [line_width, 0],
+                [line_width, vertical_size],
+                [0, vertical_size - line_width / 2]
+            ];
 
-        var poligon_bottom = [
-            [line_width, 0],
-            [horizontal_size - line_width, 0],
-            [horizontal_size, line_width],
-            [0, line_width]
-        ];
-        var poligon_center = [
-            [0,line_width / 2],
-            [line_width, 0],
-            [horizontal_size - line_width,0],
-            [horizontal_size, line_width / 2],
-            [horizontal_size - line_width, line_width],
-            [line_width, line_width]
-        ];
+            var poligon_right_bottom = [
+                [0, line_width / 2],
+                [line_width, 0],
+                [line_width, vertical_size],
+                [0, vertical_size - line_width]
+            ];
 
-        var x_up_bottom = line_offset + 2;
-        var x_right = width - line_width - line_offset - 1;
-        var y_vertical = line_offset + vertical_size + 2;
+            var poligon_left_up = [
+                [0,0],
+                [line_width, line_width / 2],
+                [line_width, vertical_size - line_width],
+                [0, vertical_size]
+            ];
 
-        segments.add(movePoligon(poligon_up, x_up_bottom, line_offset));
-        segments.add(movePoligon(poligon_right_up, x_right, line_offset));
-        segments.add(movePoligon(poligon_right_bottom, x_right, y_vertical));
-        segments.add(movePoligon(poligon_bottom, x_up_bottom, height - line_offset - line_width - 2));
-        segments.add(movePoligon(poligon_left_up, line_offset, y_vertical));
-        segments.add(movePoligon(poligon_left_bottom, line_offset, line_offset));
-        segments.add(movePoligon(poligon_center, x_up_bottom, (height - line_width)/ 2-1));
+            var poligon_left_bottom = [
+                [0,0],
+                [line_width, line_width],
+                [line_width, vertical_size - line_width / 2],
+                [0, vertical_size]
+            ];
+
+            var poligon_bottom = [
+                [line_width, 0],
+                [horizontal_size - line_width, 0],
+                [horizontal_size, line_width],
+                [0, line_width]
+            ];
+            
+            var poligon_center = [
+                [0,line_width / 2],
+                [line_width, 0],
+                [horizontal_size - line_width,0],
+                [horizontal_size, line_width / 2],
+                [horizontal_size - line_width, line_width],
+                [line_width, line_width]
+            ];
+        
+            var x_up_bottom = line_offset + 2;
+            var x_right = width - line_width - line_offset - 1;
+            var y_vertical = line_offset + vertical_size + 2;
+
+            segments.add(movePoligon(poligon_up, x_up_bottom, line_offset));
+            segments.add(movePoligon(poligon_right_up, x_right, line_offset));
+            segments.add(movePoligon(poligon_right_bottom, x_right, y_vertical));
+            segments.add(movePoligon(poligon_bottom, x_up_bottom, height - line_offset - line_width - 2));
+            segments.add(movePoligon(poligon_left_up, line_offset, y_vertical));
+            segments.add(movePoligon(poligon_left_bottom, line_offset, line_offset));
+            segments.add(movePoligon(poligon_center, x_up_bottom, (height - line_width)/ 2-1));
+        }
 
     }
 
@@ -121,6 +161,7 @@ class LCDSevenSegments {
             "7" =>[0, 1, 2],
             "8" =>[0, 1, 2, 3, 4, 5, 6],
             "9" =>[0, 1, 2, 3, 5, 6],
+            "-" => [6],
         };
 
         if (digits_dict.hasKey(digit)) {
@@ -131,9 +172,11 @@ class LCDSevenSegments {
             }
         }
         
-        dc.setColor(border_color, border_color);
-        for (var i = 0; i < segments.size(); i++){
-            drawSegmentBorder(movePoligon(segments[i], x, y), dc);
+        if (simple_style == false){
+            dc.setColor(border_color, border_color);
+            for (var i = 0; i < segments.size(); i++){
+                drawSegmentBorder(movePoligon(segments[i], x, y), dc);
+            }
         }
         drawBorder(dc, x, y);
     }

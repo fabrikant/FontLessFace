@@ -31,6 +31,9 @@ class LCDSymbols extends LCDSevenSegments{
         colon.add(movePoligon(dot[0], 0, 0));
         colon.add(movePoligon(colon[0], 0, -height / 2));
 
+        degree = [];
+        degree.add(movePoligon(dot_poligon, line_offset, 0));
+
     }
 
     function writeString(dc, x, y, str, color, border_color, justify){
@@ -70,6 +73,9 @@ class LCDSymbols extends LCDSevenSegments{
             }else if (sub_str.equals(":")){
                 writeSymbol(dc, next_x, current_y, colon, color, border_color);
                 next_x += symbol_width;
+            }else if (sub_str.equals("°")){
+                writeSymbol(dc, next_x, current_y, degree, color, border_color);
+                next_x += symbol_width;    
             }else{
                 writeDigit(dc, next_x, current_y, sub_str, color, border_color);
                 next_x += width;
