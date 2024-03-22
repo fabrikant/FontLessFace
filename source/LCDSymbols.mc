@@ -25,7 +25,7 @@ class LCDSymbols extends LCDSevenSegments{
         ];
 
         dot = [];
-        dot.add(movePoligon(dot_poligon, line_offset, height - line_offset - line_width - 1));
+        dot.add(movePoligon(dot_poligon, line_offset, height - line_offset - line_width));
 
         colon = [];
         colon.add(movePoligon(dot[0], 0, 0));

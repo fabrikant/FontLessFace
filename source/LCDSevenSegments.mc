@@ -4,9 +4,9 @@ import Toybox.Math;
 
 class LCDSevenSegments {
 
-    var height, width, line_width, line_offset;
-    var simple_style;
-    var segments;
+    protected var height, width, line_width, line_offset;
+    protected var simple_style, draw_segment_borders;
+    private var segments;
 
     function initialize(params) {
         
@@ -18,12 +18,19 @@ class LCDSevenSegments {
         if (params.hasKey(:simple_style)){
             simple_style = params[:simple_style];
         }
+        if (simple_style){
+            draw_segment_borders = false;
+        }else{
+            if (params.hasKey(:draw_segment_borders)){
+                draw_segment_borders = params[:draw_segment_borders];
+            }
+        }
 
-        initPoligons();
+        initSevenSegmentsPoligons();
 
     }
 
-    function initPoligons(){
+    function initSevenSegmentsPoligons(){
         segments = [];
 
         if (simple_style){
@@ -172,7 +179,7 @@ class LCDSevenSegments {
             }
         }
         
-        if (simple_style == false){
+        if (draw_segment_borders){
             dc.setColor(border_color, border_color);
             for (var i = 0; i < segments.size(); i++){
                 drawSegmentBorder(movePoligon(segments[i], x, y), dc);
