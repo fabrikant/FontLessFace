@@ -12,8 +12,8 @@ class FontLessFaceView extends WatchUi.WatchFace {
     function initialize() {
         bigDigital = new FontLessFont({:width => 45, :height => 110, :line_width => 12,
             :line_offset =>3, :simple_style => false, :draw_segment_borders => true});
-        smallFont = new FontLessFont({:width => 16, :height => 32, :line_width => 4,
-            :line_offset =>2, :simple_style => true});
+        smallFont = new FontLessFont({:width => 11, :height => 16, :line_width => 1,
+            :line_offset => 2, :simple_style => true});
         WatchFace.initialize();
     }
 
@@ -47,14 +47,14 @@ class FontLessFaceView extends WatchUi.WatchFace {
         var color_settings = {
             :color => color,
             :background_color => b_color,
-            //:border_color => Graphics.COLOR_ORANGE,
+            :border_color => Graphics.COLOR_ORANGE,
             //:empty_segments_color => Graphics.COLOR_BLUE,
         };
 
         bigDigital.writeString(dc, dc.getWidth() / 2, dc.getHeight() / 2, momentToString(Time.now()),  
             color_settings, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
-        smallFont.writeString(dc, dc.getWidth() / 2, dc.getHeight()*75/100, "-2:3.4°",  
+        smallFont.writeString(dc, dc.getWidth() / 2, dc.getHeight()*75/100, "-2:3.4°CF",  
             color_settings, Graphics.TEXT_JUSTIFY_CENTER);
     }
 

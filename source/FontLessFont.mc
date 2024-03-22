@@ -184,6 +184,8 @@ class FontLessFont {
             "8" =>[0, 1, 2, 3, 4, 5, 6],
             "9" =>[0, 1, 2, 3, 5, 6],
             "-" => [6],
+            "C" => [0, 5, 4, 3],
+            "F" => [0, 5, 6, 4],
         };    
 
     }
@@ -203,21 +205,22 @@ class FontLessFont {
             y_correction = 2;
         }
 
-        punctuation_segments.add(movePoligon(dot_poligon, line_offset, line_offset));
         punctuation_segments.add(movePoligon(dot_poligon, line_offset, 
             line_offset + (height-line_width)/2));
         punctuation_segments.add(movePoligon(dot_poligon, line_offset, 
             height - line_offset - line_width - y_correction));
-
+        // punctuation_segments.add(movePoligon(dot_poligon, line_offset, line_offset));
+        
+        // 3
         // 0
         // 1
-        // 2
+        
 
         pinctuation_dict = {
-            "." => [2],
-            ":" => [1, 2],
-            "°" => [0],
-            "," => [2],
+            "." => [1],
+            ":" => [0, 1],
+            // "°" => [3],
+            "," => [1],
         };
 
     }
