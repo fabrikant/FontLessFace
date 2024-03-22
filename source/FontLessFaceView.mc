@@ -39,16 +39,16 @@ class FontLessFaceView extends WatchUi.WatchFace {
 
     function onUpdate(dc as Dc) as Void {
 
-        var color = Graphics.COLOR_WHITE;
-        var b_color = Graphics.COLOR_BLACK;
+        var color = Graphics.COLOR_BLACK;
+        var b_color = Graphics.COLOR_WHITE;
         dc.setColor(b_color, b_color);
         dc.clear();
 
         var color_settings = {
             :color => color,
             :background_color => b_color,
-            :border_color => Graphics.COLOR_ORANGE,
-            //:empty_segments_color => Graphics.COLOR_BLUE,
+            //:border_color => Graphics.COLOR_DK_GRAY,
+            :empty_segments_color => Graphics.COLOR_LT_GRAY,
         };
 
         bigDigital.writeString(dc, dc.getWidth() / 2, dc.getHeight() / 2, momentToString(Time.now()),  

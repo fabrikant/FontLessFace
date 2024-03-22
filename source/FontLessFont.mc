@@ -158,12 +158,12 @@ class FontLessFont {
             var y_vertical = line_offset + vertical_size + 2;
 
             segments.add(movePoligon(poligon_up, x_up_bottom, line_offset));
-            segments.add(movePoligon(poligon_right_up, x_right, line_offset));
-            segments.add(movePoligon(poligon_right_bottom, x_right, y_vertical));
-            segments.add(movePoligon(poligon_bottom, x_up_bottom, height - line_offset - line_width - 2));
-            segments.add(movePoligon(poligon_left_up, line_offset, y_vertical));
-            segments.add(movePoligon(poligon_left_bottom, line_offset, line_offset));
-            segments.add(movePoligon(poligon_center, x_up_bottom, (height - line_width)/ 2-1));
+            segments.add(movePoligon(poligon_right_up, x_right, line_offset+1));
+            segments.add(movePoligon(poligon_right_bottom, x_right, y_vertical+1));
+            segments.add(movePoligon(poligon_bottom, x_up_bottom, height - line_offset - line_width));
+            segments.add(movePoligon(poligon_left_up, line_offset, y_vertical+1));
+            segments.add(movePoligon(poligon_left_bottom, line_offset, line_offset+1));
+            segments.add(movePoligon(poligon_center, x_up_bottom, (height - line_width)/ 2));
         }
 
         //           0
@@ -200,15 +200,10 @@ class FontLessFont {
             [0, line_width]
         ];
 
-        var y_correction = 0;
-        if (simple_style == false){
-            y_correction = 2;
-        }
-
         punctuation_segments.add(movePoligon(dot_poligon, line_offset, 
-            line_offset + (height-line_width)/2));
+            (height-line_width) / 2));
         punctuation_segments.add(movePoligon(dot_poligon, line_offset, 
-            height - line_offset - line_width - y_correction));
+            height - line_offset - line_width));
         // punctuation_segments.add(movePoligon(dot_poligon, line_offset, line_offset));
         
         // 3
