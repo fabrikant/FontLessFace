@@ -5,7 +5,7 @@ import Toybox.Math;
 class FontLessFont {
 
     protected var height, width, line_width, line_offset;
-    protected var simple_style, draw_segment_borders;
+    protected var simple_style;
     protected var punctuation_width;
 
     private var segments, punctuation_segments;
@@ -20,13 +20,6 @@ class FontLessFont {
         simple_style = false;
         if (params.hasKey(:simple_style)){
             simple_style = params[:simple_style];
-        }
-        if (simple_style){
-            draw_segment_borders = false;
-        }else{
-            if (params.hasKey(:draw_segment_borders)){
-                draw_segment_borders = params[:draw_segment_borders];
-            }
         }
 
         initSevenSegmentsPoligons();
@@ -46,7 +39,7 @@ class FontLessFont {
         return res;
     }
     
-    function writeString(dc, x, y, str, color, border_color, justify){
+    function writeString(dc, x, y, str, color_settings, justify){
 
         var next_x = x;
         var current_y = y;
@@ -67,7 +60,7 @@ class FontLessFont {
         }
 
         for (var i = 0; i < str.length(); i++){
-            next_x += writeSymbol(dc, next_x, current_y, str.substring(i, i+1), color, border_color);
+            next_x += writeSymbol(dc, next_x, current_y, str.substring(i, i+1), color_settings);
         }
     }
 
@@ -237,15 +230,15 @@ class FontLessFont {
         return res;
     }
 
-    private function writeSymbol(dc, x, y, symb, color, border_color){
+    private function writeSymbol(dc, x, y, symb, color_settings){
         
         var res = 0;
 
         if (digits_dict.hasKey(symb)){
-            drawLCDSymbol(dc, x, y, segments, digits_dict[symb], color, border_color);
+            drawLCDSymbol(dc, x, y, segments, digits_dict[symb], color_settings);
             res = width;
         }else if (pinctuation_dict.hasKey(symb)){
-            drawLCDSymbol(dc, x, y, punctuation_segments, pinctuation_dict[symb], color, border_color);
+            drawLCDSymbol(dc, x, y, punctuation_segments, pinctuation_dict[symb], color_settings);
             res = punctuation_width;
         }
 
@@ -253,17 +246,24 @@ class FontLessFont {
         return res;
     }
 
-    private function drawLCDSymbol(dc, x, y, segments, indexes, color, border_color){
+    private function drawLCDSymbol(dc, x, y, symb_segments, indexes, color_settings){
 
-        dc.setColor(color, color);
+        if (simple_style == false && color_settings.hasKey(:empty_segments_color)){
+            dc.setColor(color_settings[:empty_segments_color], color_settings[:empty_segments_color]);
+            for (var i = 0; i < symb_segments.size(); i++){
+                dc.fillPolygon(movePoligon(symb_segments[i], x, y));
+            }
+        }
+
+        dc.setColor(color_settings[:color], color_settings[:color]);
         for (var i = 0; i < indexes.size(); i++){
-            dc.fillPolygon(movePoligon(segments[indexes[i]], x, y));
+            dc.fillPolygon(movePoligon(symb_segments[indexes[i]], x, y));
         }
         
-        if (draw_segment_borders){
-            dc.setColor(border_color, border_color);
-            for (var i = 0; i < segments.size(); i++){
-                drawSegmentBorder(movePoligon(segments[i], x, y), dc);
+        if (simple_style == false && color_settings.hasKey(:border_color)){
+            dc.setColor(color_settings[:border_color], color_settings[:border_color]);
+            for (var i = 0; i < symb_segments.size(); i++){
+                drawSegmentBorder(movePoligon(symb_segments[i], x, y), dc);
             }
         }
     }

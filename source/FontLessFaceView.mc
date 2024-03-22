@@ -44,11 +44,18 @@ class FontLessFaceView extends WatchUi.WatchFace {
         dc.setColor(b_color, b_color);
         dc.clear();
 
+        var color_settings = {
+            :color => color,
+            :background_color => b_color,
+            //:border_color => Graphics.COLOR_ORANGE,
+            //:empty_segments_color => Graphics.COLOR_BLUE,
+        };
+
         bigDigital.writeString(dc, dc.getWidth() / 2, dc.getHeight() / 2, momentToString(Time.now()),  
-            color, Graphics.COLOR_ORANGE, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+            color_settings, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
         smallFont.writeString(dc, dc.getWidth() / 2, dc.getHeight()*75/100, "-2:3.4°",  
-            color, color, Graphics.TEXT_JUSTIFY_CENTER);
+            color_settings, Graphics.TEXT_JUSTIFY_CENTER);
     }
 
     function onHide() as Void {
