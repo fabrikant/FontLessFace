@@ -51,7 +51,7 @@ class FontLessFaceView extends WatchUi.WatchFace {
             :empty_segments_color => Graphics.COLOR_LT_GRAY,
         };
 
-        bigDigital.writeString(dc, dc.getWidth() / 2, dc.getHeight() / 2, momentToString(Time.now())+"°",  
+        bigDigital.writeString(dc, dc.getWidth() / 2, dc.getHeight() / 2, momentToString(Time.now()),  
             color_settings, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
         smallFont.writeString(dc, dc.getWidth() / 2, dc.getHeight()*75/100, "-2:3.4C°F°",  

@@ -207,17 +207,13 @@ class FontLessFont {
             (height-line_width) / 2));
         punctuation_segments.add(movePoligon(dot_poligon, line_offset, 
             height - line_offset - line_width));
-        // punctuation_segments.add(movePoligon(dot_poligon, line_offset, line_offset));
         
-        // 3
         // 0
         // 1
         
-
         punctuation_dict = {
             "." => [1],
             ":" => [0, 1],
-            // "°" => [3],
             "," => [1],
         };
 
