@@ -9,7 +9,7 @@ class FontLessFont {
     protected var punctuation_width;
 
     private var segments, punctuation_segments;
-    private var digits_dict, pinctuation_dict;
+    private var digits_dict, punctuation_dict, other_dict;
 
     function initialize(params) {
         
@@ -24,6 +24,7 @@ class FontLessFont {
 
         initSevenSegmentsPoligons();
         initPunctuationSegments();
+        initOtherSymbols();
     }
 
     function getStringWidth(str){
@@ -32,8 +33,10 @@ class FontLessFont {
             var sub_str = str.substring(i, i+1);
             if (digits_dict.hasKey(sub_str)){
                 res += width;
-            }else if (pinctuation_dict.hasKey(sub_str)){
+            }else if (punctuation_dict.hasKey(sub_str)){
                 res += punctuation_width;
+            }else if (other_dict.hasKey(sub_str)){
+                res += other_dict[sub_str].invoke(null, null, null, null);
             }
         }
         return res;
@@ -211,13 +214,21 @@ class FontLessFont {
         // 1
         
 
-        pinctuation_dict = {
+        punctuation_dict = {
             "." => [1],
             ":" => [0, 1],
             // "°" => [3],
             "," => [1],
         };
 
+    }
+
+    function initOtherSymbols(){
+
+        other_dict = {
+            "°" => self.method(:drawDegree),
+        };
+        
     }
 
     private function movePoligon(poligon, offset_x, offset_y){
@@ -235,9 +246,11 @@ class FontLessFont {
         if (digits_dict.hasKey(symb)){
             drawLCDSymbol(dc, x, y, segments, digits_dict[symb], color_settings);
             res = width;
-        }else if (pinctuation_dict.hasKey(symb)){
-            drawLCDSymbol(dc, x, y, punctuation_segments, pinctuation_dict[symb], color_settings);
+        }else if (punctuation_dict.hasKey(symb)){
+            drawLCDSymbol(dc, x, y, punctuation_segments, punctuation_dict[symb], color_settings);
             res = punctuation_width;
+        }else if (other_dict.hasKey(symb)){
+            res = other_dict[symb].invoke(dc, x, y, color_settings);
         }
 
         drawBorder(dc, x, y, res);         
@@ -277,5 +290,21 @@ class FontLessFont {
         return;
         dc.setColor(Graphics.COLOR_DK_GREEN, Graphics.COLOR_DK_GREEN);
         dc.drawRectangle(x, y, symb_width,  self.height);
+    }
+
+
+    /////////////////////////////////////////////////////////////////
+    //OTHER SYMBOLS
+
+    function drawDegree(dc, x, y, color_settings){
+        
+        var radius = Global.max((line_width * 1.5).toNumber(), 3);
+        var symbol_width = 2 * radius + 2 * line_offset;
+        if (dc != null){
+            dc.setColor(color_settings[:color], color_settings[:background_color]);
+            dc.setPenWidth(Global.max((line_width).toNumber(), 1));
+            dc.drawCircle(x + line_offset + radius , y + line_offset + radius, radius);
+        }
+        return symbol_width;
     }
 }
