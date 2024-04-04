@@ -7,14 +7,18 @@ import Toybox.Time;
 
 class FontLessFaceView extends WatchUi.WatchFace {
     
-    var bigDigital, smallFont;
+    var bigDigital, smallFont, mediumFont;
 
     function initialize() {
         bigDigital = new FontLessFont({:width => 45, :height => 110, :line_width => 12,
             :line_offset =>3, :simple_style => false, :draw_segment_borders => true});
         smallFont = new FontLessFont({:width => 11, :height => 16, :line_width => 1,
             :line_offset => 2, :simple_style => true});
+        mediumFont = new FontLessFont({:width => 18, :height => 32, :line_width => 4,
+            :line_offset => 2, :simple_style => false});
+        
         WatchFace.initialize();
+
     }
 
     function onLayout(dc as Dc) as Void {
@@ -56,6 +60,9 @@ class FontLessFaceView extends WatchUi.WatchFace {
 
         smallFont.writeString(dc, dc.getWidth() / 2, dc.getHeight()*75/100, "-2:3.4C°F°",  
             color_settings, Graphics.TEXT_JUSTIFY_CENTER);
+
+        mediumFont.writeString(dc, dc.getWidth() / 2, dc.getHeight()*75/100+20, "-23°C",  
+            color_settings, Graphics.TEXT_JUSTIFY_CENTER);    
     }
 
     function onHide() as Void {
